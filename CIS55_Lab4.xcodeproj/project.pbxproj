@@ -13,6 +13,8 @@
 		A5A79C701EFEB6D800421C3B /* CIS55_Lab4.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5A79C6E1EFEB6D800421C3B /* CIS55_Lab4.xcdatamodeld */; };
 		A5A79C721EFEB6D800421C3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5A79C711EFEB6D800421C3B /* Assets.xcassets */; };
 		A5A79C751EFEB6D800421C3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5A79C731EFEB6D800421C3B /* LaunchScreen.storyboard */; };
+		A5A79C7E1EFEC13900421C3B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A79C7D1EFEC13900421C3B /* CoreLocation.framework */; };
+		A5A79C801EFEC15E00421C3B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A79C7F1EFEC15E00421C3B /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		A5A79C711EFEB6D800421C3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A5A79C741EFEB6D800421C3B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A5A79C761EFEB6D800421C3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5A79C7D1EFEC13900421C3B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		A5A79C7F1EFEC15E00421C3B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +35,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5A79C801EFEC15E00421C3B /* MapKit.framework in Frameworks */,
+				A5A79C7E1EFEC13900421C3B /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +48,7 @@
 			children = (
 				A5A79C661EFEB6D800421C3B /* CIS55_Lab4 */,
 				A5A79C651EFEB6D800421C3B /* Products */,
+				A5A79C7C1EFEC13900421C3B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,6 +72,15 @@
 				A5A79C6E1EFEB6D800421C3B /* CIS55_Lab4.xcdatamodeld */,
 			);
 			path = CIS55_Lab4;
+			sourceTree = "<group>";
+		};
+		A5A79C7C1EFEC13900421C3B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A5A79C7F1EFEC15E00421C3B /* MapKit.framework */,
+				A5A79C7D1EFEC13900421C3B /* CoreLocation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
