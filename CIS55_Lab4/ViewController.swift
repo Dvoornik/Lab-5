@@ -98,8 +98,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             self.myMap.setRegion(MKCoordinateRegionForMapRect(rect!), animated: true)
         //Get the route steps to show on screen
             if let steps = myRoute?.steps as [MKRouteStep]! {
+                var i = 1
                 for step in steps {
-                    showRoute = showRoute + step.instructions
+                    showRoute = showRoute + String(i) + ". " + step.instructions + "\n"
+                    i = i + 1
+                    
                 }
                 self.route.text = showRoute
             }
