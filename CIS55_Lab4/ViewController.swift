@@ -19,8 +19,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
   
     
     var myLockMgr = CLLocationManager()
-    var myGeoCoder = CLGeocoder()
-    var showPlacemark : CLPlacemark?
+    var myGeoCoderFrom = CLGeocoder()
+    var myGeoCoderTo = CLGeocoder()
+    var showPlacemarkFrom : CLPlacemark?
+    var showPlacemarkTo : CLPlacemark?
+    let annotationFrom = MKPointAnnotation()
+    let annotationTo = MKPointAnnotation()
     
     var toAddr : String?
     var fromAddr : String?
@@ -43,43 +47,89 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
 
-    @IBAction func locate(_ sender: Any) {
+        @IBAction func directions(_ sender: Any) {
         
+        getData()
+            
+            // dalay one second to execute calculating route
+            
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+        self.calculateRout()})
+        
+        
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) ->
+        MKOverlayRenderer {
+            let renderer = MKPolylineRenderer(overlay: overlay)
+            renderer.strokeColor = UIColor.red
+            renderer.lineWidth = 3.0
+            return renderer
+    }
+    
+// Create to points from text fields
+    
+    func getData() {
         self.fromAddr = self.startLocation!.text
-
+        self.toAddr = self.destination!.text
         
-        myGeoCoder.geocodeAddressString(fromAddr!, completionHandler:{ placemarks, error in
+        
+        myGeoCoderFrom.geocodeAddressString(fromAddr!, completionHandler:{ placemarks, error in
             
             if error != nil {
-            print (error!)
-            return
+                print (error!)
+                return
             }
             if placemarks != nil && placemarks!.count > 0 {
-            let placemark = placemarks![0] as CLPlacemark
-            self.showPlacemark = placemark
+                let placemarkFrom = placemarks![0] as CLPlacemark
+                self.showPlacemarkFrom = placemarkFrom
                 
-            let annotationFrom = MKPointAnnotation()
+                
+                
+                self.annotationFrom.title = placemarkFrom.name
+                self.annotationFrom.subtitle = self.fromAddr
+                self.annotationFrom.coordinate = placemarkFrom.location!.coordinate
+                
+                
+            }
             
-            annotationFrom.title = placemark.name
-            annotationFrom.subtitle = self.fromAddr
-            annotationFrom.coordinate = placemark.location!.coordinate
-            self.myMap.showAnnotations([annotationFrom], animated: true)
+        })
+        myGeoCoderTo.geocodeAddressString(toAddr!, completionHandler:{ placemarks, error in
             
+            if error != nil {
+                print (error!)
+                return
+            }
+            if placemarks != nil && placemarks!.count > 0 {
+                let placemarkTo = placemarks![0] as CLPlacemark
+                self.showPlacemarkTo = placemarkTo
+                
+                
+                self.annotationTo.title = placemarkTo.name
+                self.annotationTo.subtitle = self.toAddr
+                self.annotationTo.coordinate = placemarkTo.location!.coordinate
+                
+                
+            }
+            
+        })
+        
     }
-        
-    })
-        
-}
+
+
+// Calculate Route
     
-    @IBAction func directions(_ sender: Any) {
+    func calculateRout() {
+        self.myMap.showAnnotations([self.annotationTo, self.annotationFrom], animated: true)
         
         let dirRq = MKDirectionsRequest()
         let MyTransportType = MKDirectionsTransportType.automobile
         var myRoute : MKRoute?
         var showRoute = ""
         
-        dirRq.source = MKMapItem.forCurrentLocation()
-        dirRq.destination = MKMapItem(placemark: MKPlacemark(placemark: showPlacemark!))
+        dirRq.source = MKMapItem(placemark: MKPlacemark(placemark: showPlacemarkFrom!))
+        dirRq.destination = MKMapItem(placemark: MKPlacemark(placemark: showPlacemarkTo!))
         dirRq.transportType = MyTransportType
         
         let myDirs = MKDirections(request: dirRq) as MKDirections
@@ -88,15 +138,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 print (routeError!)
                 return
             }
-        // Get the first route
-        myRoute = routeResponse?.routes[0] as MKRoute!
-        //Remove any existing route line and add a new one
-        self.myMap.removeOverlays(self.myMap.overlays)
+            // Get the first route
+            myRoute = routeResponse?.routes[0] as MKRoute!
+            //Remove any existing route line and add a new one
+            self.myMap.removeOverlays(self.myMap.overlays)
             self.myMap.add((myRoute?.polyline)!, level: MKOverlayLevel.aboveRoads)
-        //Scale the map to show the whole route.
-        let rect = myRoute?.polyline.boundingMapRect
+            //Scale the map to show the whole route.
+            let rect = myRoute?.polyline.boundingMapRect
             self.myMap.setRegion(MKCoordinateRegionForMapRect(rect!), animated: true)
-        //Get the route steps to show on screen
+            //Get the route steps to show on screen
             if let steps = myRoute?.steps as [MKRouteStep]! {
                 var i = 1
                 for step in steps {
@@ -108,15 +158,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
             
         })
+
     }
+
     
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) ->
-        MKOverlayRenderer {
-            let renderer = MKPolylineRenderer(overlay: overlay)
-            renderer.strokeColor = UIColor.red
-            renderer.lineWidth = 3.0
-            return renderer
-    }
 
 }
 
