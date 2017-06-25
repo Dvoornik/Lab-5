@@ -48,13 +48,27 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
 
         @IBAction func directions(_ sender: Any) {
-        
-        getData()
+            
+            self.fromAddr = self.startLocation!.text
+            self.toAddr = self.destination!.text
+            if self.fromAddr!.characters.count == 0 || self.toAddr!.characters.count == 0  {
+                
+                let alertController = UIAlertController(title: "Attention", message: "Please enter two locations", preferredStyle: UIAlertControllerStyle.alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alertController.addAction(defaultAction)
+                present(alertController, animated: true, completion: nil)
+            }
+            
+            else {
+                
+                self.getData()
+            
             
             // dalay one second to execute calculating route
             
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
         self.calculateRout()})
+        }
         
         
         
@@ -71,8 +85,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
 // Create to points from text fields
     
     func getData() {
-        self.fromAddr = self.startLocation!.text
-        self.toAddr = self.destination!.text
+        //self.fromAddr = self.startLocation!.text
+        //self.toAddr = self.destination!.text
         
         
         myGeoCoderFrom.geocodeAddressString(fromAddr!, completionHandler:{ placemarks, error in
