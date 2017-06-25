@@ -49,6 +49,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
 
         @IBAction func directions(_ sender: Any) {
             
+            startLocation.resignFirstResponder()
+            destination.resignFirstResponder()
             self.fromAddr = self.startLocation!.text
             self.toAddr = self.destination!.text
             if self.fromAddr!.characters.count == 0 || self.toAddr!.characters.count == 0  {
@@ -169,6 +171,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     
                 }
                 self.route.text = showRoute
+                self.startLocation.text = ""
+                self.destination.text = ""
             }
             
         })
